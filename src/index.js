@@ -73,7 +73,7 @@ async function buildAndRestart() {
   const startTime = new Date();
 
   return new Promise((resolve) => {
-    const command = `${BUILD_COMMAND} && pm2 restart ${PM2_APP_ID}`;
+    const command = `cd ${process.env.BUILD_DIRECTORY || '.'} && ${BUILD_COMMAND} && pm2 restart ${PM2_APP_ID}`;
     console.log(`Executing: ${command}`);
     
     exec(command, (err, stdout, stderr) => {
@@ -88,7 +88,7 @@ async function buildAndRestart() {
       }
 
       const message = `✅ *Build Success*\n*Duration:* ${duration}s`;
-      console.log(message);
+      console.log(message, stdout, stderr);
       notifySlack(message);
       resolve();
     });
