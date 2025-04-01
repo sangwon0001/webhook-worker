@@ -87,7 +87,7 @@ async function buildAndRestart() {
         return resolve();
       }
 
-      const message = `✅ *Build Success*\n*Duration:* ${duration}s`;
+      const message = `✅ *${BUILD_DIRECTORY || '.'} Build Success*\n*Duration:* ${duration}s`;
       console.log(message, stdout, stderr);
       notifySlack(message);
       resolve();
