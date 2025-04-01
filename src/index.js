@@ -16,6 +16,7 @@ const GITHUB_SECRET = process.env.GITHUB_SECRET;
 const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL;
 const PM2_APP_ID = process.env.PM2_APP_ID || '2';
 const BUILD_COMMAND = process.env.BUILD_COMMAND || 'npm run build';
+const BUILD_DIRECTORY = process.env.BUILD_DIRECTORY || '.';
 
 // Store raw body for signature verification
 app.use(bodyParser.json({
@@ -36,6 +37,8 @@ function verifySignature(req) {
   if (!signature) return false;
 
   const hmac = crypto.createHmac('sha256', GITHUB_SECRET);
+
+  console.log(req);
   hmac.update(req.rawBody);
   const digest = `sha256=${hmac.digest('hex')}`;
   
@@ -73,7 +76,7 @@ async function buildAndRestart() {
   const startTime = new Date();
 
   return new Promise((resolve) => {
-    const command = `cd ${process.env.BUILD_DIRECTORY || '.'} && ${BUILD_COMMAND} && pm2 restart ${PM2_APP_ID}`;
+    const command = `cd ${BUILD_DIRECTORY} && git pull && ${BUILD_COMMAND} && pm2 restart ${PM2_APP_ID}`;
     console.log(`Executing: ${command}`);
     
     exec(command, (err, stdout, stderr) => {
