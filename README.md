@@ -55,6 +55,63 @@ For production deployment, it's recommended to use PM2:
 pm2 start src/index.js --name webhook-worker
 ```
 
+## PM2 Deployment
+
+### Installation
+
+Install PM2 globally:
+
+```bash
+npm install -g pm2
+```
+
+### Starting the Application
+
+
+
+```bash
+pm2 start ecosystem.config.js
+```
+
+### PM2 Management Commands
+
+- View application status:
+```bash
+pm2 status
+```
+
+- Stop the application:
+```bash
+pm2 stop webhook-worker
+```
+
+- Restart the application:
+```bash
+pm2 restart webhook-worker
+```
+
+- View logs:
+```bash
+pm2 logs webhook-worker
+```
+
+### Startup and Auto-restart
+
+To ensure the application starts automatically on system reboot:
+
+```bash
+pm2 startup
+pm2 save
+```
+
+### Monitoring
+
+Use PM2's monitoring tools:
+
+```bash
+pm2 monit
+```
+
 ## GitHub Webhook Setup
 
 1. Go to your GitHub repository
